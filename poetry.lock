@@ -431,6 +431,20 @@ files = [
 ]
 
 [[package]]
+name = "coola"
+version = "0.0.7"
+description = "A light library to check if two complex/nested objects are equal or not"
+optional = false
+python-versions = ">=3.9,<4.0"
+files = [
+    {file = "coola-0.0.7-py3-none-any.whl", hash = "sha256:2087ecd2449ae71e314bcc9a7d95497433d161fc56aee81c11afb7ef0232c7c6"},
+    {file = "coola-0.0.7.tar.gz", hash = "sha256:e3ac991adf4f0feb3943c7decee622ade228116be5f0d00d253c9e3810814b08"},
+]
+
+[package.extras]
+all = ["numpy (>=1.20,<2.0)", "torch (>=1.10,<3.0)"]
+
+[[package]]
 name = "coverage"
 version = "7.2.7"
 description = "Code coverage measurement for Python"
@@ -2395,4 +2409,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "4687d62a00132090e84e6522d716c063a0e5a621118bd40d6c27f38252f388cf"
+content-hash = "5a4489503b2182144780b99d47cd976155b4bb41651445e72ac6a1cd0a8c3270"
