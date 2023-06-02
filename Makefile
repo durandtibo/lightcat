@@ -24,6 +24,11 @@ install-all :
 	poetry install --no-interaction --all-extras
 	pip install --upgrade "torch>=2.0.1"  # TODO: https://github.com/pytorch/pytorch/issues/100974
 
+.PHONY : install-min
+install-min :
+	poetry install
+	pip install --upgrade "torch>=2.0.1"  # TODO: https://github.com/pytorch/pytorch/issues/100974
+
 .PHONY : update
 update :
 	-poetry self update
@@ -53,6 +58,14 @@ unit-test :
 .PHONY : unit-test-cov
 unit-test-cov :
 	python -m pytest --timeout 10 --cov-report html --cov-report xml --cov-report term --cov=$(NAME) $(UNIT_TESTS)
+
+.PHONY : integration-test
+integration-test :
+	python -m pytest --timeout 60 $(INTEGRATION_TESTS)
+
+.PHONY : integration-test-cov
+integration-test-cov :
+	python -m pytest --timeout 60 --cov-report html --cov-report xml --cov-report term --cov=$(NAME) --cov-append $(INTEGRATION_TESTS)
 
 .PHONY : publish-pypi
 publish-pypi :
