@@ -48,10 +48,11 @@ numpy = [
 ]
 objectory = { version = ">=0.1,<1.0", optional = true }
 karbonn = { version = ">=0.0.3,<1.0", optional = true }
+torchmetrics = { version = ">=1.0,<2.0", optional = true }
 
 
 [tool.poetry.extras]
-all = ["numpy", "objectory", "karbonn"]
+all = ["numpy", "objectory", "karbonn", "torchmetrics"]
 
 [tool.poetry.group.docs]
 optional = true
