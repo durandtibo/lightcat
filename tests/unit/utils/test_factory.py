@@ -1,7 +1,7 @@
-from typing import Union
+from __future__ import annotations
 
+import pytest
 from objectory import OBJECT_TARGET
-from pytest import mark
 from torch.nn import Module, ReLU
 
 from lightcat.utils.factory import setup_object, str_target_object
@@ -11,8 +11,8 @@ from lightcat.utils.factory import setup_object, str_target_object
 ##################################
 
 
-@mark.parametrize("module", [ReLU(), {OBJECT_TARGET: "torch.nn.ReLU"}])
-def test_setup_object(module: Union[Module, dict]) -> None:
+@pytest.mark.parametrize("module", [ReLU(), {OBJECT_TARGET: "torch.nn.ReLU"}])
+def test_setup_object(module: Module | dict) -> None:
     assert isinstance(setup_object(module), ReLU)
 
 
@@ -27,10 +27,8 @@ def test_setup_object_object() -> None:
 
 
 def test_str_target_object_with_target() -> None:
-    assert (
-        str_target_object({OBJECT_TARGET: "something.MyClass"}) == "[_target_: something.MyClass]"
-    )
+    assert str_target_object({OBJECT_TARGET: "something.MyClass"}) == "something.MyClass"
 
 
 def test_str_target_object_without_target() -> None:
-    assert str_target_object({}) == "[_target_: N/A]"
+    assert str_target_object({}) == "N/A"
