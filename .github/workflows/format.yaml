@@ -1,12 +1,10 @@
-name: Publish PyPI package
+name: Format
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "v*.*.*"
+  workflow_call:
+  workflow_dispatch:  # to trigger manually
 
 jobs:
-  build:
+  format:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -25,8 +23,20 @@ jobs:
         run: |
           echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
 
-      - name: Publish
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      - name: Install packages
         run: |
-          make publish-pypi
+          make config-poetry
+          make install-all
+
+      - name: Show installed packages
+        run: |
+          poetry show
+          poetry show --tree
+
+      - name: Format
+        run: |
+          make format
+
+      - name: Lint
+        run: |
+          make lint

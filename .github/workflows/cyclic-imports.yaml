@@ -1,0 +1,80 @@
+name: Cyclic Imports
+on:
+  workflow_call:
+  workflow_dispatch:  # to trigger manually
+
+jobs:
+  cyclic-import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Set environment variable
+        run: |
+          echo $(poetry run poetry env info --path)/bin >> $GITHUB_PATH
+
+      - name: Install packages
+        run: |
+          make config-poetry
+          make install-all
+
+      - name: Show installed packages
+        run: |
+          poetry show
+          poetry show --tree
+
+      - name: check karbonn
+        run: |
+          python -c "import karbonn"
+      - name: check karbonn.distributed
+        run: |
+          python -c "from karbonn import distributed"
+      - name: check karbonn.functional
+        run: |
+          python -c "from karbonn import functional"
+
+      - name: check karbonn.metric
+        run: |
+          python -c "from karbonn import metric"
+      - name: check karbonn.metric.classification
+        run: |
+          python -c "from karbonn.metric import classification"
+      - name: check karbonn.metric.regression
+        run: |
+          python -c "from karbonn.metric import regression"
+      - name: check karbonn.metric.state
+        run: |
+          python -c "from karbonn.metric import state"
+
+      - name: check karbonn.modules
+        run: |
+          python -c "from karbonn import modules"
+      - name: check karbonn.testing
+        run: |
+          python -c "from karbonn import testing"
+
+      - name: check karbonn.utils
+        run: |
+          python -c "from karbonn import utils"
+      - name: check karbonn.utils.size
+        run: |
+          python -c "from karbonn.utils import size"
+      - name: check karbonn.utils.summary
+        run: |
+          python -c "from karbonn.utils import summary"
+      - name: check karbonn.utils.tensor
+        run: |
+          python -c "from karbonn.utils import tensor"
+      - name: check karbonn.utils.tracker
+        run: |
+          python -c "from karbonn.utils import tracker"
