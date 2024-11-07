@@ -51,7 +51,7 @@ karbonn = { version = ">=0.0.3,<1.0", optional = true }
 
 
 [tool.poetry.extras]
-all = ["numpy", "objectory"]
+all = ["numpy", "objectory", "karbonn"]
 
 [tool.poetry.group.docs]
 optional = true
