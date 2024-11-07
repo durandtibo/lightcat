@@ -40,4 +40,3 @@ jobs:
       - name: check lightcat.utils
         run: |
           python -c "from lightcat import utils"
-

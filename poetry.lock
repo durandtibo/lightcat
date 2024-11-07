@@ -2845,9 +2845,9 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 type = ["pytest-mypy"]
 
 [extras]
-all = ["numpy", "numpy", "objectory"]
+all = ["karbonn", "numpy", "numpy", "objectory", "torchmetrics"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "63b6451d55a006b3876ecd4d82f4925d686bfd77470bcc8c1ed80a0ec748cab5"
+content-hash = "88ddad03b0ceee7af8f873526e9619df6eecfe955a7841d005d2d5329de5b949"
