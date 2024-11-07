@@ -33,48 +33,11 @@ jobs:
           poetry show
           poetry show --tree
 
-      - name: check karbonn
+      - name: check lightcat
         run: |
-          python -c "import karbonn"
-      - name: check karbonn.distributed
-        run: |
-          python -c "from karbonn import distributed"
-      - name: check karbonn.functional
-        run: |
-          python -c "from karbonn import functional"
+          python -c "import lightcat"
 
-      - name: check karbonn.metric
+      - name: check lightcat.utils
         run: |
-          python -c "from karbonn import metric"
-      - name: check karbonn.metric.classification
-        run: |
-          python -c "from karbonn.metric import classification"
-      - name: check karbonn.metric.regression
-        run: |
-          python -c "from karbonn.metric import regression"
-      - name: check karbonn.metric.state
-        run: |
-          python -c "from karbonn.metric import state"
+          python -c "from lightcat import utils"
 
-      - name: check karbonn.modules
-        run: |
-          python -c "from karbonn import modules"
-      - name: check karbonn.testing
-        run: |
-          python -c "from karbonn import testing"
-
-      - name: check karbonn.utils
-        run: |
-          python -c "from karbonn import utils"
-      - name: check karbonn.utils.size
-        run: |
-          python -c "from karbonn.utils import size"
-      - name: check karbonn.utils.summary
-        run: |
-          python -c "from karbonn.utils import summary"
-      - name: check karbonn.utils.tensor
-        run: |
-          python -c "from karbonn.utils import tensor"
-      - name: check karbonn.utils.tracker
-        run: |
-          python -c "from karbonn.utils import tracker"
