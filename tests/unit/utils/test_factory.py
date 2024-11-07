@@ -11,7 +11,7 @@ from lightcat.utils.factory import setup_object, str_target_object
 ##################################
 
 
-@mark.parametrize("module", (ReLU(), {OBJECT_TARGET: "torch.nn.ReLU"}))
+@mark.parametrize("module", [ReLU(), {OBJECT_TARGET: "torch.nn.ReLU"}])
 def test_setup_object(module: Union[Module, dict]) -> None:
     assert isinstance(setup_object(module), ReLU)
 
