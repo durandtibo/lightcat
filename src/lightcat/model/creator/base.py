@@ -36,9 +36,13 @@ class BaseModelCreator(ABC, metaclass=AbstractFactory):
     ... )
     >>> creator
     ModelCreator(
+      (_target_): lightning.pytorch.demos.boring_classes.BoringModel
+    )
     >>> model = creator.create()
     >>> model
-    DummyClassificationModel(
+    BoringModel(
+      (layer): Linear(in_features=32, out_features=2, bias=True)
+    )
 
     ```
     """
@@ -96,9 +100,7 @@ def is_model_creator_config(config: dict) -> bool:
     >>> is_model_creator_config(
     ...     {
     ...         "_target_": "lightcat.model.creator.ModelCreator",
-    ...         "model_config": {
-    ...             "_target_": "lightning.pytorch.demos.boring_classes.BoringModel"
-    ...         },
+    ...         "model": {"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"},
     ...     }
     ... )
     True
@@ -128,13 +130,13 @@ def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
     >>> creator = setup_model_creator(
     ...     {
     ...         "_target_": "lightcat.model.creator.ModelCreator",
-    ...         "model_config": {
-    ...             "_target_": "lightning.pytorch.demos.boring_classes.BoringModel"
-    ...         },
+    ...         "model": {"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"},
     ...     }
     ... )
     >>> creator
     ModelCreator(
+      (_target_): lightning.pytorch.demos.boring_classes.BoringModel
+    )
 
     ```
     """
