@@ -36,6 +36,9 @@ jobs:
       - name: check lightcat
         run: |
           python -c "import lightcat"
+      - name: check lightcat.callback
+        run: |
+          python -c "from lightcat import callback"
       - name: check lightcat.testing
         run: |
           python -c "from lightcat import testing"
