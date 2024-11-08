@@ -52,11 +52,11 @@ def is_model_config(config: dict) -> bool:
     return objectory.utils.is_object_config(config, LightningModule)
 
 
-def setup_model(module: LightningModule | dict) -> LightningModule:
+def setup_model(model: LightningModule | dict) -> LightningModule:
     r"""Set up a ``lightning.LightningModule`` object.
 
     Args:
-        module: The module or its configuration.
+        model: The model or its configuration.
 
     Returns:
         The instantiated ``lightning.LightningModule`` object.
@@ -74,12 +74,12 @@ def setup_model(module: LightningModule | dict) -> LightningModule:
 
     ```
     """
-    if isinstance(module, dict):
+    if isinstance(model, dict):
         logger.info("Initializing a 'lightning.LightningModule' from its configuration... ")
         check_objectory()
-        module = objectory.factory(**module)
-    if not isinstance(module, LightningModule):
+        model = objectory.factory(**model)
+    if not isinstance(model, LightningModule):
         logger.warning(
-            f"module is not a 'lightning.LightningModule' object (received: {type(module)})"
+            f"model is not a 'lightning.LightningModule' object (received: {type(model)})"
         )
-    return module
+    return model

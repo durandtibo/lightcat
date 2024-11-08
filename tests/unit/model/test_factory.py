@@ -21,9 +21,9 @@ else:  # pragma: no cover
     OBJECT_TARGET = "_target_"
 
 
-#######################################
+#####################################
 #     Tests for is_model_config     #
-#######################################
+#####################################
 
 
 @objectory_available
@@ -36,18 +36,18 @@ def test_is_model_config_false() -> None:
     assert not is_model_config({OBJECT_TARGET: "torch.nn.Identity"})
 
 
-###################################
+#################################
 #     Tests for setup_model     #
-###################################
+#################################
 
 
 @objectory_available
 @pytest.mark.parametrize(
-    "module",
+    "model",
     [BoringModel(), {OBJECT_TARGET: "lightning.pytorch.demos.boring_classes.BoringModel"}],
 )
-def test_setup_model(module: LightningModule | dict) -> None:
-    assert isinstance(setup_model(module), BoringModel)
+def test_setup_model(model: LightningModule | dict) -> None:
+    assert isinstance(setup_model(model), BoringModel)
 
 
 @objectory_available
