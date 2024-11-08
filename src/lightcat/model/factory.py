@@ -3,7 +3,7 @@ object from its configuration."""
 
 from __future__ import annotations
 
-__all__ = ["is_lmodule_config", "setup_lmodule"]
+__all__ = ["is_model_config", "setup_model"]
 
 import logging
 from unittest.mock import Mock
@@ -21,7 +21,7 @@ else:  # pragma: no cover
 logger = logging.getLogger(__name__)
 
 
-def is_lmodule_config(config: dict) -> bool:
+def is_model_config(config: dict) -> bool:
     r"""Indicate if the input configuration is a configuration for a
     ``lightning.LightningModule``.
 
@@ -42,8 +42,8 @@ def is_lmodule_config(config: dict) -> bool:
 
     ```pycon
 
-    >>> from lightcat.lmodule import is_lmodule_config
-    >>> is_lmodule_config({"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"})
+    >>> from lightcat.model import is_model_config
+    >>> is_model_config({"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"})
     True
 
     ```
@@ -52,7 +52,7 @@ def is_lmodule_config(config: dict) -> bool:
     return objectory.utils.is_object_config(config, LightningModule)
 
 
-def setup_lmodule(module: LightningModule | dict) -> LightningModule:
+def setup_model(module: LightningModule | dict) -> LightningModule:
     r"""Set up a ``lightning.LightningModule`` object.
 
     Args:
@@ -65,10 +65,8 @@ def setup_lmodule(module: LightningModule | dict) -> LightningModule:
 
     ```pycon
 
-    >>> from lightcat.lmodule import setup_lmodule
-    >>> model = setup_lmodule(
-    ...     {"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"}
-    ... )
+    >>> from lightcat.model import setup_model
+    >>> model = setup_model({"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"})
     >>> model
     BoringModel(
       (layer): Linear(in_features=32, out_features=2, bias=True)
