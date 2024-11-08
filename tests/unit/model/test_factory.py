@@ -8,7 +8,7 @@ import pytest
 import torch
 from lightning.pytorch.demos.boring_classes import BoringModel
 
-from lightcat.lmodule import is_lmodule_config, setup_lmodule
+from lightcat.model import is_model_config, setup_model
 from lightcat.testing import objectory_available
 from lightcat.utils.imports import is_objectory_available
 
@@ -22,22 +22,22 @@ else:  # pragma: no cover
 
 
 #######################################
-#     Tests for is_lmodule_config     #
+#     Tests for is_model_config     #
 #######################################
 
 
 @objectory_available
-def test_is_lmodule_config_true() -> None:
-    assert is_lmodule_config({OBJECT_TARGET: "lightning.pytorch.demos.boring_classes.BoringModel"})
+def test_is_model_config_true() -> None:
+    assert is_model_config({OBJECT_TARGET: "lightning.pytorch.demos.boring_classes.BoringModel"})
 
 
 @objectory_available
-def test_is_lmodule_config_false() -> None:
-    assert not is_lmodule_config({OBJECT_TARGET: "torch.nn.Identity"})
+def test_is_model_config_false() -> None:
+    assert not is_model_config({OBJECT_TARGET: "torch.nn.Identity"})
 
 
 ###################################
-#     Tests for setup_lmodule     #
+#     Tests for setup_model     #
 ###################################
 
 
@@ -46,20 +46,20 @@ def test_is_lmodule_config_false() -> None:
     "module",
     [BoringModel(), {OBJECT_TARGET: "lightning.pytorch.demos.boring_classes.BoringModel"}],
 )
-def test_setup_lmodule(module: LightningModule | dict) -> None:
-    assert isinstance(setup_lmodule(module), BoringModel)
+def test_setup_model(module: LightningModule | dict) -> None:
+    assert isinstance(setup_model(module), BoringModel)
 
 
 @objectory_available
-def test_setup_lmodule_incorrect_type(caplog: pytest.LogCaptureFixture) -> None:
+def test_setup_model_incorrect_type(caplog: pytest.LogCaptureFixture) -> None:
     with caplog.at_level(level=logging.WARNING):
-        assert isinstance(setup_lmodule({OBJECT_TARGET: "torch.nn.Identity"}), torch.nn.Identity)
+        assert isinstance(setup_model({OBJECT_TARGET: "torch.nn.Identity"}), torch.nn.Identity)
         assert caplog.messages
 
 
-def test_setup_lmodule_object_no_objectory() -> None:
+def test_setup_model_object_no_objectory() -> None:
     with (
         patch("lightcat.utils.imports.is_objectory_available", lambda: False),
         pytest.raises(RuntimeError, match="'objectory' package is required but not installed."),
     ):
-        setup_lmodule({OBJECT_TARGET: "torch.nn.ReLU"})
+        setup_model({OBJECT_TARGET: "torch.nn.ReLU"})
