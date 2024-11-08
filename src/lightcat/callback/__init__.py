@@ -1,4 +1,4 @@
-r"""Contain callbacks and code to manage callbacks."""
+r"""Contain ``lightning.Callback`` and code to manage them."""
 
 from __future__ import annotations
 

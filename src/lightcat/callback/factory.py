@@ -1,6 +1,5 @@
-r"""Contain functions to instantiate a
-``lightning.pytorch.callbacks.Callback`` object from its
-configuration."""
+r"""Contain functions to instantiate a ``lightning.Callback`` object
+from its configuration."""
 
 from __future__ import annotations
 
@@ -28,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 def is_callback_config(config: dict) -> bool:
     r"""Indicate if the input configuration is a configuration for a
-    ``lightning.pytorch.callbacks.Callback``.
+    ``lightning.Callback``.
 
     This function only checks if the value of the key  ``_target_``
     is valid. It does not check the other values. If ``_target_``
@@ -40,7 +39,7 @@ def is_callback_config(config: dict) -> bool:
 
     Returns:
         ``True`` if the input configuration is a configuration
-            for a ``lightning.pytorch.callbacks.Callback`` object,
+            for a ``lightning.Callback`` object,
             otherwise ``False``.
 
     Example usage:
@@ -60,13 +59,13 @@ def is_callback_config(config: dict) -> bool:
 
 
 def setup_callback(callback: Callback | dict) -> Callback:
-    r"""Set up a ``lightning.pytorch.callbacks.Callback`` object.
+    r"""Set up a ``lightning.Callback`` object.
 
     Args:
         callback: The callback or its configuration.
 
     Returns:
-        The instantiated ``lightning.pytorch.callbacks.Callback``
+        The instantiated ``lightning.Callback``
             object.
 
     Example usage:
@@ -83,29 +82,25 @@ def setup_callback(callback: Callback | dict) -> Callback:
     ```
     """
     if isinstance(callback, dict):
-        logger.info(
-            "Initializing a 'lightning.pytorch.callbacks.Callback' from its configuration... "
-        )
+        logger.info("Initializing a 'lightning.Callback' from its configuration... ")
         check_objectory()
         callback = objectory.factory(**callback)
     if not isinstance(callback, Callback):
         logger.warning(
-            "callback is not a 'lightning.pytorch.callbacks.Callback' object"
-            f"(received: {type(callback)})"
+            f"callback is not a 'lightning.Callback' object (received: {type(callback)})"
         )
     return callback
 
 
 def setup_list_callbacks(callbacks: Sequence[Callback | dict]) -> list[Callback]:
-    r"""Set up a list of ``lightning.pytorch.callbacks.Callback``
-    objects.
+    r"""Set up a list of ``lightning.Callback`` objects.
 
     Args:
         callbacks: The callbacks or their configuration.
 
     Returns:
         The instantiated list of
-            ``lightning.pytorch.callbacks.Callback`` objects.
+            ``lightning.Callback`` objects.
 
     Example usage:
 
