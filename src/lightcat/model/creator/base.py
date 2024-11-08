@@ -5,13 +5,20 @@ from __future__ import annotations
 __all__ = ["BaseModelCreator", "is_model_creator_config", "setup_model_creator"]
 
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
-
-from objectory import AbstractFactory
-from objectory.utils import is_object_config
+from unittest.mock import Mock
 
 from lightcat.utils.factory import str_target_object
+from lightcat.utils.imports import check_objectory, is_objectory_available
+
+if is_objectory_available():
+    import objectory
+    from objectory import AbstractFactory
+else:  # pragma: no cover
+    objectory = Mock()
+    AbstractFactory = ABCMeta
+
 
 if TYPE_CHECKING:
     from lightning import LightningModule
@@ -36,9 +43,13 @@ class BaseModelCreator(ABC, metaclass=AbstractFactory):
     ... )
     >>> creator
     ModelCreator(
+      (_target_): lightning.pytorch.demos.boring_classes.BoringModel
+    )
     >>> model = creator.create()
     >>> model
-    DummyClassificationModel(
+    BoringModel(
+      (layer): Linear(in_features=32, out_features=2, bias=True)
+    )
 
     ```
     """
@@ -96,16 +107,15 @@ def is_model_creator_config(config: dict) -> bool:
     >>> is_model_creator_config(
     ...     {
     ...         "_target_": "lightcat.model.creator.ModelCreator",
-    ...         "model_config": {
-    ...             "_target_": "lightning.pytorch.demos.boring_classes.BoringModel"
-    ...         },
+    ...         "model": {"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"},
     ...     }
     ... )
     True
 
     ```
     """
-    return is_object_config(config, BaseModelCreator)
+    check_objectory()
+    return objectory.utils.is_object_config(config, BaseModelCreator)
 
 
 def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
@@ -128,13 +138,13 @@ def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
     >>> creator = setup_model_creator(
     ...     {
     ...         "_target_": "lightcat.model.creator.ModelCreator",
-    ...         "model_config": {
-    ...             "_target_": "lightning.pytorch.demos.boring_classes.BoringModel"
-    ...         },
+    ...         "model": {"_target_": "lightning.pytorch.demos.boring_classes.BoringModel"},
     ...     }
     ... )
     >>> creator
     ModelCreator(
+      (_target_): lightning.pytorch.demos.boring_classes.BoringModel
+    )
 
     ```
     """
@@ -142,6 +152,7 @@ def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
         logger.info(
             f"Initializing a model creator from its configuration... {str_target_object(creator)}"
         )
+        check_objectory()
         creator = BaseModelCreator.factory(**creator)
     if not isinstance(creator, BaseModelCreator):
         logger.warning(f"creator is not a 'BaseModelCreator' (received: {type(creator)})")
