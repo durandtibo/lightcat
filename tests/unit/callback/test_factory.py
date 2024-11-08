@@ -75,6 +75,7 @@ def test_setup_callback_object_no_objectory() -> None:
 ##########################################
 
 
+@objectory_available
 def test_setup_list_callbacks() -> None:
     callbacks = setup_list_callbacks(
         [
