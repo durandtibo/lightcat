@@ -4,14 +4,18 @@ configuration."""
 
 from __future__ import annotations
 
-__all__ = ["is_callback_config", "setup_callback"]
+__all__ = ["is_callback_config", "setup_callback", "setup_list_callbacks"]
 
 import logging
+from typing import TYPE_CHECKING
 from unittest.mock import Mock
 
 from lightning import Callback
 
 from lightcat.utils.imports import check_objectory, is_objectory_available
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 if is_objectory_available():
     import objectory
@@ -44,7 +48,9 @@ def is_callback_config(config: dict) -> bool:
     ```pycon
 
     >>> from lightcat.callback import is_callback_config
-    >>> is_callback_config({"_target_": "torch.nn.Identity"})
+    >>> is_callback_config(
+    ...     {"_target_": "lightning.pytorch.callbacks.EarlyStopping", "monitor": "loss"}
+    ... )
     True
 
     ```
@@ -60,18 +66,19 @@ def setup_callback(callback: Callback | dict) -> Callback:
         callback: The callback or its configuration.
 
     Returns:
-        The instantiated ``lightning.pytorch.callbacks.Callback`` object.
+        The instantiated ``lightning.pytorch.callbacks.Callback``
+            object.
 
     Example usage:
 
     ```pycon
 
     >>> from lightcat.callback import setup_callback
-    >>> linear = setup_callback(
-    ...     {"_target_": "torch.nn.Linear", "in_features": 4, "out_features": 6}
+    >>> callback = setup_callback(
+    ...     {"_target_": "lightning.pytorch.callbacks.EarlyStopping", "monitor": "loss"}
     ... )
-    >>> linear
-    Linear(in_features=4, out_features=6, bias=True)
+    >>> callback
+    <lightning.pytorch.callbacks.early_stopping.EarlyStopping object at 0x...>
 
     ```
     """
@@ -87,3 +94,34 @@ def setup_callback(callback: Callback | dict) -> Callback:
             f"(received: {type(callback)})"
         )
     return callback
+
+
+def setup_list_callbacks(callbacks: Sequence[Callback | dict]) -> list[Callback]:
+    r"""Set up a list of ``lightning.pytorch.callbacks.Callback``
+    objects.
+
+    Args:
+        callbacks: The callbacks or their configuration.
+
+    Returns:
+        The instantiated list of
+            ``lightning.pytorch.callbacks.Callback`` objects.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from lightcat.callback import setup_list_callbacks
+    >>> callbacks = setup_list_callbacks(
+    ...     [
+    ...         {"_target_": "lightning.pytorch.callbacks.EarlyStopping", "monitor": "loss"},
+    ...         {"_target_": "lightning.pytorch.callbacks.ModelSummary"},
+    ...     ]
+    ... )
+    >>> callbacks
+    [<lightning.pytorch.callbacks.early_stopping.EarlyStopping ...>,
+     <lightning.pytorch.callbacks.model_summary.ModelSummary ...>]
+
+    ```
+    """
+    return [setup_callback(callback) for callback in callbacks]
