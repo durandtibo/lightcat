@@ -5,13 +5,20 @@ from __future__ import annotations
 __all__ = ["BaseModelCreator", "is_model_creator_config", "setup_model_creator"]
 
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from typing import TYPE_CHECKING
-
-from objectory import AbstractFactory
-from objectory.utils import is_object_config
+from unittest.mock import Mock
 
 from lightcat.utils.factory import str_target_object
+from lightcat.utils.imports import check_objectory, is_objectory_available
+
+if is_objectory_available():
+    import objectory
+    from objectory import AbstractFactory
+else:  # pragma: no cover
+    objectory = Mock()
+    AbstractFactory = ABCMeta
+
 
 if TYPE_CHECKING:
     from lightning import LightningModule
@@ -107,7 +114,8 @@ def is_model_creator_config(config: dict) -> bool:
 
     ```
     """
-    return is_object_config(config, BaseModelCreator)
+    check_objectory()
+    return objectory.utils.is_object_config(config, BaseModelCreator)
 
 
 def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
@@ -144,6 +152,7 @@ def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
         logger.info(
             f"Initializing a model creator from its configuration... {str_target_object(creator)}"
         )
+        check_objectory()
         creator = BaseModelCreator.factory(**creator)
     if not isinstance(creator, BaseModelCreator):
         logger.warning(f"creator is not a 'BaseModelCreator' (received: {type(creator)})")
