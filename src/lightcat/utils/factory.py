@@ -6,8 +6,14 @@ __all__ = ["setup_object", "str_target_object"]
 
 import logging
 from typing import TypeVar
+from unittest.mock import Mock
 
-from objectory import OBJECT_TARGET, factory
+from lightcat.utils.imports import is_objectory_available
+
+if is_objectory_available():
+    import objectory
+else:  # pragma: no cover
+    objectory = Mock()
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +48,7 @@ def setup_object(obj_or_config: T | dict) -> T:
         logger.info(
             f"Initializing {str_target_object(obj_or_config)} object from its configuration... "
         )
-        return factory(**obj_or_config)
+        return objectory.factory(**obj_or_config)
     return obj_or_config
 
 
@@ -62,11 +68,11 @@ def str_target_object(config: dict) -> str:
     ```pycon
 
     >>> from lightcat.utils.factory import str_target_object
-    >>> str_target_object({OBJECT_TARGET: "something.MyClass"})
+    >>> str_target_object({"_target_": "something.MyClass"})
     something.MyClass
     >>> str_target_object({})
     N/A
 
     ```
     """
-    return config.get(OBJECT_TARGET, "N/A")
+    return config.get(objectory.OBJECT_TARGET, "N/A")

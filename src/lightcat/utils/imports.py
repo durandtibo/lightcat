@@ -3,10 +3,13 @@ r"""Implement some utility functions to manage optional dependencies."""
 from __future__ import annotations
 
 __all__ = [
+    "check_karbonn",
     "check_objectory",
     "check_torchmetrics",
+    "is_karbonn_available",
     "is_objectory_available",
     "is_torchmetrics_available",
+    "karbonn_available",
     "objectory_available",
     "torchmetrics_available",
 ]
@@ -17,6 +20,80 @@ from coola.utils.imports import decorator_package_available, package_available
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+
+###################
+#     karbonn     #
+###################
+
+
+def is_karbonn_available() -> bool:
+    r"""Indicate if the ``karbonn`` package is installed or not.
+
+    Returns:
+        ``True`` if ``karbonn`` is available otherwise ``False``.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from lightcat.utils.imports import is_karbonn_available
+    >>> is_karbonn_available()
+
+    ```
+    """
+    return package_available("karbonn")
+
+
+def check_karbonn() -> None:
+    r"""Check if the ``karbonn`` package is installed.
+
+    Raises:
+        RuntimeError: if the ``karbonn`` package is not installed.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from lightcat.utils.imports import check_karbonn
+    >>> check_karbonn()
+
+    ```
+    """
+    if not is_karbonn_available():
+        msg = (
+            "'karbonn' package is required but not installed. "
+            "You can install 'karbonn' package with the command:\n\n"
+            "pip install karbonn\n"
+        )
+        raise RuntimeError(msg)
+
+
+def karbonn_available(fn: Callable[..., Any]) -> Callable[..., Any]:
+    r"""Implement a decorator to execute a function only if ``karbonn``
+    package is installed.
+
+    Args:
+        fn: The function to execute.
+
+    Returns:
+        A wrapper around ``fn`` if ``karbonn`` package is installed,
+            otherwise ``None``.
+
+    Example usage:
+
+    ```pycon
+
+    >>> from lightcat.utils.imports import karbonn_available
+    >>> @karbonn_available
+    ... def my_function(n: int = 0) -> int:
+    ...     return 42 + n
+    ...
+    >>> my_function()
+
+    ```
+    """
+    return decorator_package_available(fn, is_karbonn_available)
 
 
 #####################
@@ -34,7 +111,7 @@ def is_objectory_available() -> bool:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import is_objectory_available
+    >>> from lightcat.utils.imports import is_objectory_available
     >>> is_objectory_available()
 
     ```
@@ -52,7 +129,7 @@ def check_objectory() -> None:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import check_objectory
+    >>> from lightcat.utils.imports import check_objectory
     >>> check_objectory()
 
     ```
@@ -81,7 +158,7 @@ def objectory_available(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import objectory_available
+    >>> from lightcat.utils.imports import objectory_available
     >>> @objectory_available
     ... def my_function(n: int = 0) -> int:
     ...     return 42 + n
@@ -93,9 +170,9 @@ def objectory_available(fn: Callable[..., Any]) -> Callable[..., Any]:
     return decorator_package_available(fn, is_objectory_available)
 
 
-###################
+########################
 #     torchmetrics     #
-###################
+########################
 
 
 def is_torchmetrics_available() -> bool:
@@ -108,7 +185,7 @@ def is_torchmetrics_available() -> bool:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import is_torchmetrics_available
+    >>> from lightcat.utils.imports import is_torchmetrics_available
     >>> is_torchmetrics_available()
 
     ```
@@ -126,7 +203,7 @@ def check_torchmetrics() -> None:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import check_torchmetrics
+    >>> from lightcat.utils.imports import check_torchmetrics
     >>> check_torchmetrics()
 
     ```
@@ -155,7 +232,7 @@ def torchmetrics_available(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     ```pycon
 
-    >>> from karbonn.utils.imports import torchmetrics_available
+    >>> from lightcat.utils.imports import torchmetrics_available
     >>> @torchmetrics_available
     ... def my_function(n: int = 0) -> int:
     ...     return 42 + n
