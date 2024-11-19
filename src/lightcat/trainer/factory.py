@@ -52,11 +52,11 @@ def is_trainer_config(config: dict) -> bool:
     return objectory.utils.is_object_config(config, Trainer)
 
 
-def setup_trainer(module: Trainer | dict) -> Trainer:
+def setup_trainer(trainer: Trainer | dict) -> Trainer:
     r"""Set up a ``lightning.Trainer`` object.
 
     Args:
-        module: The module or its configuration.
+        trainer: The trainer or its configuration.
 
     Returns:
         The instantiated ``lightning.Trainer`` object.
@@ -72,10 +72,10 @@ def setup_trainer(module: Trainer | dict) -> Trainer:
 
     ```
     """
-    if isinstance(module, dict):
+    if isinstance(trainer, dict):
         logger.info("Initializing a 'lightning.Trainer' from its configuration... ")
         check_objectory()
-        module = objectory.factory(**module)
-    if not isinstance(module, Trainer):
-        logger.warning(f"module is not a 'lightning.Trainer' object (received: {type(module)})")
-    return module
+        trainer = objectory.factory(**trainer)
+    if not isinstance(trainer, Trainer):
+        logger.warning(f"trainer is not a 'lightning.Trainer' object (received: {type(trainer)})")
+    return trainer
