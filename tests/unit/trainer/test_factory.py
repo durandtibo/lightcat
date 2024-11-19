@@ -39,11 +39,11 @@ def test_is_trainer_config_false() -> None:
 
 @objectory_available
 @pytest.mark.parametrize(
-    "module",
+    "trainer",
     [Trainer(), {OBJECT_TARGET: "lightning.Trainer"}],
 )
-def test_setup_trainer(module: Trainer | dict) -> None:
-    assert isinstance(setup_trainer(module), Trainer)
+def test_setup_trainer(trainer: Trainer | dict) -> None:
+    assert isinstance(setup_trainer(trainer), Trainer)
 
 
 @objectory_available
