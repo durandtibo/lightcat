@@ -1,4 +1,4 @@
-r"""Contain the model creator base class."""
+r"""Contain the ``lightning.LightningModule`` creator base class."""
 
 from __future__ import annotations
 
@@ -27,11 +27,11 @@ logger = logging.getLogger(__name__)
 
 
 class BaseModelCreator(ABC, metaclass=AbstractFactory):
-    r"""Define the base class to create a model.
+    r"""Define the base class to create a ``lightning.LightningModule``.
 
-    Note that it is not the unique approach to create a model. Feel
-    free to use other approaches if this approach does not fit your
-    needs.
+    Note that it is not the unique approach to create a
+    ``lightning.LightningModule``. Feel free to use other approaches
+    if this approach does not fit your needs.
 
     Example usage:
 
@@ -56,14 +56,10 @@ class BaseModelCreator(ABC, metaclass=AbstractFactory):
 
     @abstractmethod
     def create(self) -> LightningModule:
-        r"""Create a model on the device(s) where it should run.
-
-        This method is responsible to register the event handlers
-        associated to the model. This method is also responsible to
-        move the model parameters to the device(s).
+        r"""Create a ``lightning.LightningModule``.
 
         Returns:
-            The created model.
+            The created ``lightning.LightningModule``.
 
         Example usage:
 
@@ -150,7 +146,8 @@ def setup_model_creator(creator: BaseModelCreator | dict) -> BaseModelCreator:
     """
     if isinstance(creator, dict):
         logger.info(
-            f"Initializing a model creator from its configuration... {str_target_object(creator)}"
+            f"Initializing a 'LightningModule' creator from its configuration... "
+            f"{str_target_object(creator)}"
         )
         check_objectory()
         creator = BaseModelCreator.factory(**creator)
