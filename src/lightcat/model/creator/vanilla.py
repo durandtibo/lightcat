@@ -1,4 +1,4 @@
-r"""Contain the model creator base class."""
+r"""Contain the ``lightning.LightningModule`` creator base class."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ class ModelCreator(BaseModelCreator):
     r"""Create a ``lightning.LightningModule`` object.
 
     Args:
-        model: The model or its configuration.
+        model: The ``lightning.LightningModule`` or its configuration.
 
     Example usage:
 
@@ -57,5 +57,5 @@ class ModelCreator(BaseModelCreator):
         return f"{self.__class__.__qualname__}(\n  {str_indent(args)}\n)"
 
     def create(self) -> LightningModule:
-        logger.info("Creating model...")
+        logger.info("Creating 'LightningModule'...")
         return setup_model(model=self._model)
