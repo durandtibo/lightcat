@@ -4,9 +4,9 @@ from __future__ import annotations
 
 __all__ = [
     "BaseTrainerCreator",
+    "TrainerCreator",
     "is_trainer_creator_config",
     "setup_trainer_creator",
-    "TrainerCreator",
 ]
 
 from lightcat.trainer.creator.base import (
