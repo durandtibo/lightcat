@@ -3000,4 +3000,4 @@ all = ["karbonn", "numpy", "numpy", "objectory", "torchmetrics"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.13"
-content-hash = "19b65f9ecdd294172c91cc211fefa30b78daecc43d08750758ce2e4e33cd0417"
+content-hash = "c02b17a2357861531d7c85ec33e75b064d386db4d14afb517047e1335d24dfa4"
